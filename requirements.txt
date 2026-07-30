@@ -1,0 +1,8 @@
+streamlit   // You write web apps using only Python. No HTML, CSS, or JavaScript knowledge is required.
+pypdf2      // for resume reader type: pdf 
+python-docx    // for resume reader type: docx
+scikit-learn   // for th-idf  
+spacy    // for tagging (pos, ner, noun-chuncks)
+pandas
+nltk        // basic library for preprocessing 
+sentence-transformers  // for recognizing the same meaning words. good replacement with tf-idf.

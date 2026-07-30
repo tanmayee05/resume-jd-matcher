@@ -14,11 +14,12 @@ st.set_page_config(page_title="Resume Matcher", page_icon="📄", layout="center
 
 st.title("📄 Resume ↔ Job Description Matcher")
 st.write(
-    "Upload your resume and paste a job description to get an ATS-style "
-    "match score and see which important keywords might be missing."
+    "Upload your resume, add the job title, and paste the job description "
+    "to get an ATS-style match score."
 )
 
 resume_file = st.file_uploader("Upload your Resume", type=["pdf", "docx", "txt"])
+job_title = st.text_input("Job Title (as listed in the posting)")
 jd_text = st.text_area("Paste the Job Description", height=200)
 
 if st.button("Calculate Match Score"):
@@ -36,7 +37,7 @@ if st.button("Calculate Match Score"):
             result = score_resume_against_jd(
                 resume_path=tmp_path,
                 jd_text_raw=jd_text,
-                jd_is_file=False,
+                job_title=job_title,
             )
 
             os.remove(tmp_path)
@@ -45,23 +46,22 @@ if st.button("Calculate Match Score"):
         st.metric(label="ATS Match Score", value=f"{result['match_score_percent']}%")
         st.progress(min(int(result['match_score_percent']), 100))
 
-        # Show both scoring methods
-        col1, col2 = st.columns(2)
-
+        col1, col2, col3 = st.columns(3)
         with col1:
-            st.caption(f"TF-IDF (keyword) score: {result['tfidf_score_percent']}%")
-
+            st.caption(f"Keyword Match: {result['keyword_score_percent']}%")
         with col2:
-            st.caption(f"Embedding (semantic) score: {result['embedding_score_percent']}%")
+            st.caption(f"Title Match: {result['title_score_percent']}%")
+        with col3:
+            st.caption(f"Formatting: {result['format_score_percent']}%")
 
-        st.subheader("⚠️ Keywords Missing or Weak in Your Resume")
+        st.subheader("⚠️ Missing Keywords")
         if result["missing_keywords"]:
             st.write(", ".join(result["missing_keywords"]))
         else:
             st.write("No major missing keywords found — good match!")
 
-        with st.expander("🔍 See extracted entities from your resume"):
-            st.json(result["resume_entities"])
-
-        with st.expander("🔍 See extracted skills/noun phrases from your resume"):
-            st.write(result["resume_skills_noun_chunks"])
+        st.subheader("📋 Missing Resume Sections")
+        if result["missing_sections"]:
+            st.write(", ".join(result["missing_sections"]))
+        else:
+            st.write("All standard sections present!")

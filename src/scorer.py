@@ -1,82 +1,87 @@
 """
 scorer.py
-Combines file_reader, preprocessor, ner_extractor, tfidf_matcher,
-and embedding_matcher into a single end-to-end scoring pipeline.
+Combines all pipeline pieces into a single, realistic ATS-style score.
+
+Weights loosely follow how real ATS systems score (per industry write-ups):
+- Keyword/semantic match : 50%
+- Job title alignment    : 30%
+- Formatting/parseability: 20%
 """
 
 from src.file_reader import extract_text
 from src.preprocessor import preprocess
-from src.ner_extractor import extract_entities, extract_noun_chunks
 from src.tfidf_matcher import calculate_tfidf_similarity, get_missing_keywords
 from src.embedding_matcher import calculate_embedding_similarity
+from src.title_matcher import check_title_match
+from src.format_checker import check_formatting
 
 
-def score_resume_against_jd(resume_path, jd_text_raw, jd_is_file=False):
+def score_resume_against_jd(resume_path, jd_text_raw, job_title=""):
     """
-    Full pipeline:
-    1. Read resume file (and JD if it's also a file)
-    2. Run NER/noun-chunk extraction on RAW text (before cleaning)
-    3. Preprocess both texts (clean for TF-IDF)
-    4. Calculate TF-IDF similarity score (exact keyword match)
-    5. Calculate embedding similarity score (semantic/meaning match)
-    6. Combine both into a final blended score
-    7. Find missing keywords
+    Full simplified pipeline:
+    1. Read resume file
+    2. Preprocess text for TF-IDF
+    3. Keyword/semantic score (embeddings -- single score, no blending)
+    4. Job title alignment score
+    5. Formatting/section-header score
+    6. Combine into one final weighted score
+    7. List missing keywords (TF-IDF based, still useful as a simple list)
     """
 
-    # 1. Get raw text
+    # 1. Raw text
     resume_raw = extract_text(resume_path)
-    jd_raw = extract_text(jd_text_raw) if jd_is_file else jd_text_raw
+    jd_raw = jd_text_raw
 
-    # 2. NER / noun chunks on RAW text
-    resume_entities = extract_entities(resume_raw)
-    resume_skills = extract_noun_chunks(resume_raw)
-
-    jd_entities = extract_entities(jd_raw)
-    jd_skills = extract_noun_chunks(jd_raw)
-
-    # 3. Preprocess (clean) both texts for TF-IDF
+    # 2. Preprocess for TF-IDF (used only for missing keyword list)
     resume_clean = preprocess(resume_raw)
     jd_clean = preprocess(jd_raw)
 
-    # 4. TF-IDF similarity score (exact keyword overlap)
-    tfidf_score, vectorizer, tfidf_matrix = calculate_tfidf_similarity(
-        resume_clean, jd_clean
+    # 3. Keyword/semantic score -- embeddings only (captures meaning + exact words reasonably well)
+    keyword_score = calculate_embedding_similarity(resume_raw, jd_raw)
+
+    # 4. Job title alignment
+    title_score = check_title_match(resume_raw, job_title) if job_title else 0.5
+    # default 0.5 (neutral) if no title provided, so it doesn't unfairly tank the score
+
+    # 5. Formatting check
+    format_result = check_formatting(resume_raw)
+    format_score = format_result["formatting_score"]
+
+    # 6. Final weighted score
+    final_score = (
+        (keyword_score * 0.50)
+        + (title_score * 0.30)
+        + (format_score * 0.20)
     )
 
-    # 5. Embedding similarity score (semantic/meaning overlap)
-    # Uses lightly-cleaned RAW text, not the heavily stripped TF-IDF version
-    embedding_score = calculate_embedding_similarity(resume_raw, jd_raw)
-
-    # 6. Blended final score -- weight embeddings higher since they
-    # capture meaning better; TF-IDF still contributes for exact keyword signal
-    final_score = (0.4 * tfidf_score) + (0.6 * embedding_score)
-
-    # 7. Missing keywords (still TF-IDF based -- good for exact keyword gaps)
+    # 7. Missing keywords (simple list, still from TF-IDF)
     missing_keywords = get_missing_keywords(resume_clean, jd_clean)
 
     return {
         "match_score_percent": round(final_score * 100, 2),
-        "tfidf_score_percent": round(tfidf_score * 100, 2),
-        "embedding_score_percent": round(embedding_score * 100, 2),
+        "keyword_score_percent": round(keyword_score * 100, 2),
+        "title_score_percent": round(title_score * 100, 2),
+        "format_score_percent": round(format_score * 100, 2),
         "missing_keywords": missing_keywords,
-        "resume_entities": resume_entities,
-        "jd_entities": jd_entities,
-        "resume_skills_noun_chunks": resume_skills,
-        "jd_skills_noun_chunks": jd_skills,
+        "missing_sections": format_result["missing_sections"],
         "resume_raw_preview": resume_raw[:300],
-        "jd_raw_preview": jd_raw[:300],
     }
 
 
 # Quick manual test
 if __name__ == "__main__":
     result = score_resume_against_jd(
-        resume_path="data/Tanmayee_Valluru_Resume",
+        resume_path="data/Tanmayee_Valluru_Resume.pdf",
         jd_text_raw="We are looking for a Backend Engineer with experience in Spring Boot, Kafka, Docker, and AWS.",
-        jd_is_file=False,
+        job_title="Backend Engineer",
     )
 
-    print("Final Blended Score:", result["match_score_percent"], "%")
-    print("  -> TF-IDF component:    ", result["tfidf_score_percent"], "%")
-    print("  -> Embedding component: ", result["embedding_score_percent"], "%")
+    print("Final ATS-Style Score:", result["match_score_percent"], "%")
+    print("  -> Keyword score:   ", result["keyword_score_percent"], "%")
+    print("  -> Title score:     ", result["title_score_percent"], "%")
+    print("  -> Format score:    ", result["format_score_percent"], "%")
     print("Missing Keywords:", result["missing_keywords"])
+    print("Missing Sections:", result["missing_sections"])
+
+
+    

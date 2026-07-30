@@ -1,3 +1,95 @@
+# Resume ↔ Job Description Matcher
+
+An NLP-based tool that scores how well a resume matches a job description,
+similar to how real Applicant Tracking Systems (ATS) evaluate candidates —
+built to understand and practice core NLP techniques, not just call an LLM.
+
+## What It Does
+
+Upload a resume (PDF/DOCX/TXT), paste a job title and job description, and
+get back:
+- An overall ATS-style match score (0–100%)
+- A breakdown of *why* — keyword match, title alignment, formatting
+- A list of important skill keywords missing from the resume
+- A list of standard resume sections that are missing
+
+## How the Score Is Calculated
+
+Real ATS systems score resumes across multiple weighted factors, not just
+"does this word appear." This project follows that same structure:
+
+| Factor | Weight | How it's measured |
+|---|---|---|
+| Keyword / Semantic Match | 50% | Sentence embeddings (meaning-based similarity) |
+| Job Title Alignment | 30% | Word-overlap between JD title and resume text |
+| Formatting / Parseability | 20% | Presence of standard section headers |
+
+**Why embeddings instead of plain keyword matching?**
+Plain keyword matching (TF-IDF) treats "Docker" and "containerization" as
+completely unrelated, since they share no exact words. Sentence embeddings
+capture *meaning*, so conceptually related terms score as similar even with
+different wording — closer to how a human recruiter would read a resume.
+
+**Missing keywords are filtered by part-of-speech (POS tagging)** to keep
+only meaningful nouns (e.g. "kubernetes", "microservices") and filter out
+generic filler words the JD repeats often (e.g. "learn", "exposure").
+
+## Tech Stack
+
+- **Python** — core language
+- **Streamlit** — web UI
+- **spaCy** — POS tagging (keyword filtering)
+- **scikit-learn** — TF-IDF vectorization, cosine similarity
+- **sentence-transformers** — semantic embedding similarity
+- **NLTK** — text preprocessing (stopwords, lemmatization)
+- **pdfplumber / python-docx** — resume file parsing
+
+## Project Structure
+
+```
+resume-matcher/
+├── app.py                 # Streamlit UI
+├── src/
+│   ├── file_reader.py     # Extract text from PDF/DOCX/TXT
+│   ├── preprocessor.py    # Clean text for TF-IDF
+│   ├── tfidf_matcher.py   # Keyword matching + missing keyword detection
+│   ├── embedding_matcher.py # Semantic similarity scoring
+│   ├── title_matcher.py   # Job title alignment check
+│   ├── format_checker.py  # Resume section/formatting check
+│   └── scorer.py          # Combines everything into final score
+```
+
+## Running Locally
+
+```bash
+python -m venv venv
+venv\Scripts\activate        # Windows
+pip install -r requirements.txt
+python -m spacy download en_core_web_sm
+streamlit run app.py
+```
+
+## Known Limitations
+
+- PDF text extraction can merge text across tightly-spaced resume sections
+  (a known limitation of PDF parsing generally, not specific to this tool)
+- Job title matching is a simple word-overlap heuristic, not a trained model
+- Does not evaluate years of experience against specific skills (a common
+  but complex ATS feature, out of scope for this version)
+
+## What I Learned Building This
+
+Started with a naive TF-IDF-only approach, discovered it couldn't catch
+synonyms/related concepts, and added sentence embeddings. Also discovered
+that naive keyword extraction surfaces generic filler words from repetitive
+JD phrasing — fixed by filtering missing keywords to nouns only via POS
+tagging. Iterated the scoring model itself once I compared it against how
+real ATS systems weight keyword match, title alignment, and formatting.
+
+
+
+
+
 //creating the folder
 mkdir resume-matcher
 cd resume-matcher

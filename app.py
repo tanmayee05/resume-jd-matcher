@@ -55,9 +55,10 @@ if st.button("Calculate Match Score"):
             st.caption(f"Formatting: {result['format_score_percent']}%")
 
         st.subheader("⚠️ Missing Keywords")
-        if result["missing_keywords"]:
-            st.write(", ".join(result["missing_keywords"]))
+        if result["missing_skills"]:
+            st.write(", ".join(result["missing_skills"]))
         else:
+            st.write(", ".join(result["matched_skills"]))
             st.write("No major missing keywords found — good match!")
 
         st.subheader("📋 Missing Resume Sections")

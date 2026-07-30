@@ -8,12 +8,18 @@ Weights loosely follow how real ATS systems score (per industry write-ups):
 - Formatting/parseability: 20%
 """
 
+
+
 from src.file_reader import extract_text
 from src.preprocessor import preprocess
 from src.tfidf_matcher import calculate_tfidf_similarity, get_missing_keywords
 from src.embedding_matcher import calculate_embedding_similarity
 from src.title_matcher import check_title_match
 from src.format_checker import check_formatting
+from src.skill_matcher import load_skills, compare_skills
+# for 7.1
+from src.skill_matcher import load_skills, compare_skills
+
 
 
 def score_resume_against_jd(resume_path, jd_text_raw, job_title=""):
@@ -54,15 +60,21 @@ def score_resume_against_jd(resume_path, jd_text_raw, job_title=""):
         + (format_score * 0.20)
     )
 
-    # 7. Missing keywords (simple list, still from TF-IDF)
-    missing_keywords = get_missing_keywords(resume_clean, jd_clean)
+    # 7. Missing keywords (simple list, still from TF-IDF and pos tagging) still some scrap is coming so using 7.1
+    #missing_keywords = get_missing_keywords(resume_clean, jd_clean)
+
+    # 7.1 it is from skill_matcher.py, by uploading the .csv and finding missing and matching onces.
+    _skills_db = load_skills("data/tech_skills.csv")
+    skill_result = compare_skills(resume_raw, jd_raw, _skills_db)
 
     return {
         "match_score_percent": round(final_score * 100, 2),
         "keyword_score_percent": round(keyword_score * 100, 2),
         "title_score_percent": round(title_score * 100, 2),
         "format_score_percent": round(format_score * 100, 2),
-        "missing_keywords": missing_keywords,
+        #"missing_keywords": missing_keywords,                  // is this 7
+        "matched_skills": skill_result["matched_skills"],       # is for 7.1
+        "missing_skills": skill_result["missing_skills"],       # is for 7.1
         "missing_sections": format_result["missing_sections"],
         "resume_raw_preview": resume_raw[:300],
     }

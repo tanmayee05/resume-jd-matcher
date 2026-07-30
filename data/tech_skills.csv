@@ -1,0 +1,504 @@
+skill
+.js
+.net
+a/b testing
+accessibility testing
+activemq
+adobe xd
+agile
+airflow
+airtable
+akamai
+alibaba cloud
+android sdk
+android studio
+angular
+anomaly detection
+ansible
+ant design
+apache
+apache cordova
+api
+api gateway
+app store connect
+appcenter
+appium
+ar/vr
+arangodb
+argocd
+artificial intelligence
+asana
+asp.net
+assembly
+atom
+augmented reality
+autoencoder
+automated testing
+autonomous vehicles
+aws
+aws cloudformation
+aws cloudwatch
+aws codebuild
+aws codepipeline
+aws dynamodb
+aws ecs
+aws eks
+aws fargate
+aws iam
+aws lambda
+aws rds
+aws sns
+aws sqs
+aws vpc
+axios
+azure
+azure active directory
+azure blob storage
+azure cosmos db
+azure devops
+azure functions
+azure monitor
+azure resource manager
+azure sql
+azure vm
+babel
+backbone.js
+bamboo
+basecamp
+bash
+behavior driven development
+bert
+bigquery
+biotechnology
+bitrise
+blockchain
+blue-green deployment
+bootstrap
+branch
+browserify
+brunch
+bulma
+bun
+c#
+c++
+caddy
+canary release
+cassandra
+catboost
+cdn
+chai
+chakra ui
+chart.js
+chef
+chroma
+ci/cd
+circleci
+classification
+clean code
+clickhouse
+clickup
+clojure
+cloudflare
+cluster analysis
+cnn
+cobol
+cockroachdb
+code review
+codemagic
+colab
+computer vision
+confluence
+consul
+containerization
+cosmos db
+couchdb
+cryptocurrency
+cryptography
+crystal
+css
+cucumber
+cypress
+d printing
+dagster
+dall-e
+dart
+data analysis
+data science
+data visualization
+ddos protection
+deep learning
+defi
+design patterns
+detox
+devops
+digital twins
+digitalocean
+discord
+django
+dns
+docker
+domain driven design
+draw.io
+drones
+dry
+dynamodb
+eclipse
+edge computing
+elasticsearch
+elixir
+emacs
+ember.js
+end-to-end testing
+eslint
+expo
+express.js
+extreme programming
+f#
+factor app
+fastapi
+fastlane
+fastly
+feature engineering
+feature flags
+fetch api
+figma
+firebase
+firebase realtime database
+firestore
+firewall
+flask
+flutter
+flux
+fortran
+foundation
+functional testing
+g
+gan
+generative ai
+git
+git flow
+github
+github actions
+github flow
+gitlab ci
+go
+google bigquery
+google cloud
+google cloud functions
+google cloud run
+google cloud storage
+google compute engine
+google kubernetes engine
+google play console
+google workspace
+gpt
+graphite
+graphql
+graphql api
+groovy
+grpc
+gru
+grunt
+gulp
+hadoop
+haproxy
+haskell
+hbase
+helm
+heroku
+hive
+html
+http
+https
+hugging face
+husky
+hypothesis testing
+ibm cloud
+ids/ips
+image segmentation
+influxdb
+insomnia
+integration testing
+intellij
+internet of things
+invision
+ionic
+iot
+istio
+j
+janusgraph
+jasmine
+java
+javascript
+jenkins
+jest
+jetpack compose
+jira
+jmeter
+jquery
+json
+jspm
+julia
+jupyter
+jupyter notebook
+jwt
+kafka
+kaggle
+kanban
+karma
+keras
+kerberos
+kiss
+kotlin
+kotlin multiplatform
+kubeflow
+kubernetes
+kustomize
+langchain
+laravel
+ldap
+less
+lightgbm
+linkerd
+linode
+lint-staged
+linux
+llamaindex
+llm
+load balancer
+load testing
+logging
+low code
+lstm
+lua
+lucidchart
+machine learning
+macos
+manual testing
+mariadb
+markdown
+material-ui
+matlab
+maui
+memcached
+metaflow
+metaverse
+meteor
+microservices
+microsoft teams
+miro
+mixed reality
+mlflow
+mlops
+mobx
+mocha
+model deployment
+monday.com
+mongodb
+monitoring
+monolith
+mysql
+named entity recognition
+nanotechnology
+nativescript
+nats
+natural language processing
+netlify
+neural networks
+next.js
+nft
+nginx
+ngrx
+nim
+nltk
+no code
+node.js
+nomad
+notepad++
+notion
+npm
+nuxt.js
+oauth
+object detection
+objective-c
+observability
+ocaml
+onesignal
+openapi
+opencv
+openid connect
+oracle
+oracle cloud
+orientdb
+ovh
+pachyderm
+packer
+pair programming
+parcel
+penetration testing
+performance testing
+perl
+phonegap
+php
+pinecone
+pki
+pl/sql
+playwright
+pnpm
+postgresql
+postman
+powershell
+predictive modeling
+prefect
+prettier
+prometheus
+protocol buffers
+puppet
+puppeteer
+pycharm
+pytorch
+quantum computing
+r
+rabbitmq
+radius
+react
+react native
+recommendation systems
+redis
+redis streams
+redshift
+redux
+refactoring
+regression analysis
+reinforcement learning
+renewable energy
+requirejs
+rest api
+rnn
+robot framework
+robotic process automation
+robotics
+rollup
+rpa
+rstudio
+ruby
+ruby on rails
+rust
+rxjs
+salesforce cloud
+saltstack
+saml
+sass
+scala
+scikit-learn
+scrum
+security testing
+selenium
+semantic ui
+sentiment analysis
+serverless
+service mesh
+servicenow
+shell
+siem
+sketch
+slack
+smart cities
+smart contracts
+snowflake
+snowpack
+soapui
+soc
+socket.io
+solid principles
+solidity
+solr
+space technology
+spacy
+spark
+specflow
+speech recognition
+spinnaker
+splunk
+spring boot
+sql
+sqlite
+ssh
+ssl/tls
+stable diffusion
+statistical analysis
+stress testing
+stylelint
+sublime text
+svelte
+swagger
+swift
+swiftui
+symfony
+systemjs
+t-sql
+tailwind css
+tcp/ip
+teamcity
+tekton
+tensorflow
+terraform
+test driven development
+testflight
+text-to-speech
+three.js
+time series analysis
+timescaledb
+topic modeling
+traefik
+transfer learning
+transformers
+travis ci
+trello
+trunk based development
+turbopack
+typescript
+uikit
+unit testing
+unix
+usability testing
+v
+vagrant
+varnish
+vault
+vercel
+vim
+virtual reality
+virtualization
+vite
+vpn
+vs code
+vue.js
+vuex
+vulnerability assessment
+vultr
+vyper
+waf
+waterfall
+weaviate
+webgl
+webpack
+webrtc
+websocket
+webstorm
+windows
+workday
+xamarin
+xcode
+xgboost
+xml
+yagni
+yaml
+yarn
+zeplin
+zero knowledge proof
+zero trust
+zeromq
+zig
+zoom
+zsh

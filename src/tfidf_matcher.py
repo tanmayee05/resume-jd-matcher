@@ -3,7 +3,7 @@ tfidf_matcher.py
 Calculates similarity between resume and job description using TF-IDF + cosine similarity.
 Also extracts important JD keywords that are missing from the resume.
 """
-
+from src.ner_extractor import filter_to_nouns 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -27,7 +27,7 @@ def calculate_tfidf_similarity(resume_text, jd_text):
     return similarity_score, vectorizer, tfidf_matrix
 
 
-def get_missing_keywords(resume_text, jd_text, top_n=15):
+def get_missing_keywords(resume_text, jd_text, top_n=20):
     """
     Finds important words in the JD (by TF-IDF weight) that are
     missing or underrepresented in the resume.
@@ -57,8 +57,8 @@ def get_missing_keywords(resume_text, jd_text, top_n=15):
         word for word, jd_score, resume_score in word_scores
         if resume_score < (jd_score * 0.3)  # resume barely has this word
     ]
-
-    return missing[:top_n]
+    missing = filter_to_nouns(missing)
+    return missing[:]
 
 
 # Quick manual test

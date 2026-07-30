@@ -44,6 +44,17 @@ def extract_noun_chunks(text):
     return [chunk.text for chunk in doc.noun_chunks]
 
 
+def filter_to_nouns(words):
+    """Keep only words that are nouns/proper nouns -- filters out
+    generic verbs/filler like 'learn', 'exposure', 'like'."""
+    filtered = []
+    for word in words:
+        doc = nlp(word)
+        if doc and doc[0].pos_ in ("NOUN", "PROPN"):
+            filtered.append(word)
+    return filtered
+
+
 # Quick manual test
 if __name__ == "__main__":
     sample = (

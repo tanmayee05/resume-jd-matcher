@@ -88,3 +88,6 @@ being replaced by the skills taxonomy for keyword-level matching.
    learn and demonstrate core NLP techniques (TF-IDF, embeddings, POS
    tagging, custom NER), not to exactly replicate commercial ATS scoring
    products, which use proprietary, more sophisticated pipelines.
+
+
+

@@ -54,12 +54,27 @@ if st.button("Calculate Match Score"):
         with col3:
             st.caption(f"Formatting: {result['format_score_percent']}%")
 
-        st.subheader("⚠️ Missing Keywords")
+        col4, col5 = st.columns(2)
+        with col4:
+            edu = result["education_details"]
+            st.caption(f"Education Match: {result['education_score_percent']}% "
+                       f"(status: {edu['status']})")
+        with col5:
+            exp = result["experience_details"]
+            st.caption(f"Experience Match: {result['experience_score_percent']}% "
+                       f"(status: {exp['status']}, resume years: {exp['resume_years']})")
+
+        st.subheader("✅ Matched Skills")
+        if result["matched_skills"]:
+            st.write(", ".join(result["matched_skills"]))
+        else:
+            st.write("No matched skills found.")
+
+        st.subheader("⚠️ Missing Skills")
         if result["missing_skills"]:
             st.write(", ".join(result["missing_skills"]))
         else:
-            st.write(", ".join(result["matched_skills"]))
-            st.write("No major missing keywords found — good match!")
+            st.write("No major missing skills found — good match!")
 
         st.subheader("📋 Missing Resume Sections")
         if result["missing_sections"]:
